@@ -155,7 +155,7 @@
             // 動かす
             ////////////////////////////
             weight += 0.01 * elapsedTime;
-            weight = Math.fmod(weight, 1.0);
+            while(1.0 < weight) weight -= 1.0;// weight % 1
             
             ////////////////////////////
             // 描画
