@@ -145,6 +145,7 @@
         // フレームの更新
         ////////////////////////////
         var lastTime = null;
+        var weight = 0.0;
         function update(timestamp){
             // 更新間隔の取得
             var elapsedTime = lastTime ? timestamp - lastTime : 0;
@@ -153,6 +154,8 @@
             ////////////////////////////
             // 動かす
             ////////////////////////////
+            weight += 0.01 * elapsedTime;
+            weight = Math.fmod(weight, 1.0);
             
             ////////////////////////////
             // 描画
@@ -162,14 +165,15 @@
             gl.clear(gl.COLOR_BUFFER_BIT);
             
             // ポリゴンの描画
-            if (texture_color !== null && texture_mask !== null) {
-                gl.bindTexture(gl.TEXTURE_2D, texture_color);// テクスチャを有効にする
-                gl.activeTexture(gl.TEXTURE0);// 0番のテクスチャを有効にする
-                gl.uniform1i(uniLocations[1], 0);// シェーダの'samplerColor'に0番を割り当てる
-                gl.uniform1i(uniLocations[2], 1);// シェーダの'samplerMask'に1番を割り当てる
-                gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-                gl.drawArrays(gl.TRIANGLES, 0, 6);// 2個の三角形を表示
-            }
+            gl.bindTexture(gl.TEXTURE_2D, texture_color);// テクスチャを有効にする
+            gl.bindTexture(gl.TEXTURE_2D, texture_mask);// テクスチャを有効にする
+            gl.activeTexture(gl.TEXTURE0);// 0番のテクスチャを有効にする
+            gl.activeTexture(gl.TEXTURE1);// 0番のテクスチャを有効にする
+            gl.uniform1i(uniLocations[1], 0);// シェーダの'samplerColor'に0番を割り当てる
+            gl.uniform1i(uniLocations[2], 1);// シェーダの'samplerMask'に1番を割り当てる
+            gl.uniform1f(uniLocations[0], weight);// 動きの重みを渡す
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            gl.drawArrays(gl.TRIANGLES, 0, 6);// 2個の三角形を表示
             
             gl.flush();// 画面更新
 
