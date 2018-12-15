@@ -53,7 +53,7 @@
 
             'void main(void) {',
                 'float mask = texture(samplerMask, vTexCoord).x;',
-                'vec2 flow = mask * vec2(-0.02, 0.01);',
+                'vec2 flow = mask * vec2(-0.08, 0.04);',
                 'vec4 texColor0 = texture(samplerColor, vTexCoord + weight * flow);',
                 'vec4 texColor1 = texture(samplerColor, vTexCoord + fract(weight+0.5) * flow);',
                 'outColor = mix(texColor0, texColor1, abs(2.0 * weight - 1.0));',
@@ -154,7 +154,7 @@
             ////////////////////////////
             // 動かす
             ////////////////////////////
-            weight += 0.01 * elapsedTime;
+            weight += 0.001 * elapsedTime;
             while(1.0 < weight) weight -= 1.0;// weight % 1
             
             ////////////////////////////
