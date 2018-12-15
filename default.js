@@ -126,18 +126,18 @@
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-            gl.bindTexture(gl.TEXTURE_2D, null);// バインドを外す
             texture_color = tex_color; // 生成したテクスチャをグローバル変数に代入
             
-            var texture_mask = gl.createTexture();// テクスチャオブジェクトの生成
-            gl.bindTexture(gl.TEXTURE_2D, texture_mask);// テクスチャをバインド
+            var tex_mask = gl.createTexture();// テクスチャオブジェクトの生成
+            gl.bindTexture(gl.TEXTURE_2D, tex_mask);// テクスチャをバインド
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, resources['mask.png']);// テクスチャへ画像を写す
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+            texture_mask = tex_mask; // 生成したテクスチャをグローバル変数に代入
+
             gl.bindTexture(gl.TEXTURE_2D, null);// バインドを外す
-            texture_color = texture_mask; // 生成したテクスチャをグローバル変数に代入
             
             window.requestAnimationFrame(update);
         }
