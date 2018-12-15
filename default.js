@@ -53,11 +53,10 @@
 
             'void main(void) {',
                 'float mask = texture(samplerMask, vTexCoord).x;',
-                'vec2 flow = mask * vec2(-0.04, 0.02);',
+                'vec2 flow = mask * vec2(-0.10, 0.05);',
                 'vec4 texColor0 = texture(samplerColor, vTexCoord + weight * flow);',
                 'vec4 texColor1 = texture(samplerColor, vTexCoord + fract(weight+0.5) * flow);',
                 'outColor = mix(texColor0, texColor1, 0.5 * cos(2.0*3.141592*weight) + 0.5);',
-//                'outColor = mix(texColor0, texColor1, abs(2.0 * weight - 1.0));',
             '}'
         ].join('\n');
 
