@@ -53,7 +53,7 @@
 
             'void main(void) {',
                 'float mask = texture(samplerMask, vTexCoord).x;',
-                'vec2 flow = mask * vec2(-0.02, -0.01);',
+                'vec2 flow = mask * vec2(-0.02, 0.01);',
                 'vec4 texColor0 = texture(samplerColor, vTexCoord + weight * flow);',
                 'vec4 texColor1 = texture(samplerColor, vTexCoord + fract(weight+0.5) * flow);',
                 'outColor = mix(texColor1, texColor0, weight);',
@@ -165,12 +165,12 @@
             gl.clear(gl.COLOR_BUFFER_BIT);
             
             // ポリゴンの描画
-            gl.bindTexture(gl.TEXTURE_2D, texture_color);// テクスチャを有効にする
-            gl.bindTexture(gl.TEXTURE_2D, texture_mask);// テクスチャを有効にする
-            gl.activeTexture(gl.TEXTURE0);// 0番のテクスチャを有効にする
-            gl.activeTexture(gl.TEXTURE1);// 0番のテクスチャを有効にする
             gl.uniform1i(uniLocations[1], 0);// シェーダの'samplerColor'に0番を割り当てる
+            gl.activeTexture(gl.TEXTURE0);// 0番のテクスチャを有効にする
+            gl.bindTexture(gl.TEXTURE_2D, texture_color);// テクスチャを有効にする
             gl.uniform1i(uniLocations[2], 1);// シェーダの'samplerMask'に1番を割り当てる
+            gl.activeTexture(gl.TEXTURE1);// 1番のテクスチャを有効にする
+            gl.bindTexture(gl.TEXTURE_2D, texture_mask);// テクスチャを有効にする
             gl.uniform1f(uniLocations[0], weight);// 動きの重みを渡す
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
             gl.drawArrays(gl.TRIANGLES, 0, 6);// 2個の三角形を表示
