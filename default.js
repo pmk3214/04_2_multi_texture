@@ -109,12 +109,37 @@
         gl.bindBuffer(gl.ARRAY_BUFFER, null);        // 悪さされないようにバッファを外す
         
         // テクスチャの読み込み
+        load_resources([
+            'texture.png',
+            'mask.png',
+        ], after_load);
+        
         var texture_color = null;
-        load_texture('texture.png', texture_color);
         var texture_mask = null;
-        load_texture('mask.png', texture_mask);
-
-        window.requestAnimationFrame(update);
+        function after_load(resources)
+        {
+            var tex_color = gl.createTexture();// テクスチャオブジェクトの生成
+            gl.bindTexture(gl.TEXTURE_2D, tex_color);// テクスチャをバインド
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, resources['texture.png']);// テクスチャへ画像を写す
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+            gl.bindTexture(gl.TEXTURE_2D, null);// バインドを外す
+            texture_color = tex_color; // 生成したテクスチャをグローバル変数に代入
+            
+            var texture_mask = gl.createTexture();// テクスチャオブジェクトの生成
+            gl.bindTexture(gl.TEXTURE_2D, texture_mask);// テクスチャをバインド
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, resources['mask.png']);// テクスチャへ画像を写す
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+            gl.bindTexture(gl.TEXTURE_2D, null);// バインドを外す
+            texture_color = texture_mask; // 生成したテクスチャをグローバル変数に代入
+            
+            window.requestAnimationFrame(update);
+        }
         
         ////////////////////////////
         // フレームの更新
@@ -152,22 +177,37 @@
             window.requestAnimationFrame(update);
         }
         
-        function load_texture(source, texture){
+        function load_resources(sources, texture){
             var img = new Image();// 画像オブジェクトの生成
 
             img.onload = function(texture){// 画像が読み込まれた際の処理
-                var tex = gl.createTexture();// テクスチャオブジェクトの生成
-                gl.bindTexture(gl.TEXTURE_2D, tex);// テクスチャをバインド
-                // テクスチャへ画像を写す
-                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-                gl.bindTexture(gl.TEXTURE_2D, null);// バインドを外す
-                texture = tex; // 生成したテクスチャをグローバル変数に代入
             };
             img.src = source;// 画像ファイルを指定して読み込む
+        }
+        
+        function load_resources(urls, callback) {
+          var resources = {};
+          var resource_count = urls.length;
+
+          // 各画像のロードが完了するたびに呼び出される関数
+          var onResourceLoad = function() {
+            --resource_count;
+            // 全画像のロードが完了したら、引数で指定されたコールバック関数を呼ぶ。
+            if (resource_count == 0) {
+              callback(resources);
+            }
+          };
+
+          for (var ii = 0; ii < resource_count; ++ii) {
+            var image = load_resource(urls[ii], onResourceLoad);
+            resources[urls[ii]] = image;
+          }
+        }        
+        function load_resource(url, callback) {
+            var image = new Image();
+            image.src = url;
+            image.onload = callback;
+            return image;
         }
         
     }, false);
