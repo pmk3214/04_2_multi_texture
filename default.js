@@ -57,7 +57,7 @@
 
                 'vec4 texColor0 = texture(samplerColor, vTexCoord + weight * flow);',
                 'vec4 texColor1 = texture(samplerColor, vTexCoord + fract(weight+0.5) * flow);',
-                'outColor = mix(texColor0 * w0, texColor1 * w1, 0.5 * cos(2.0*3.141592*weight) + 0.5) / w;',
+                'outColor = mix(texColor0, texColor1, 0.5 * cos(2.0*3.141592*weight) + 0.5);',
             '}'
         ].join('\n');
 
