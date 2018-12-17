@@ -62,8 +62,6 @@
                 'float w1 = texture(samplerMask, vTexCoord + fract(weight+0.5) * flow).x;',
                 'float w = w0 + w1;',
             
-                'vec4 texColor0 = texture(samplerColor, vTexCoord + weight * flow);',
-                'vec4 texColor1 = texture(samplerColor, vTexCoord + fract(weight+0.5) * flow);',
                 'outColor = mix(texColor0 * w0, texColor1 * w1, 0.5 * cos(2.0*3.141592*weight) + 0.5) / w;',
                 'if(w < 0.0001) outColor = texture(samplerColor, vTexCoord);',
             '}'
