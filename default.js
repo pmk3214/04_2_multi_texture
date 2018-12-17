@@ -57,17 +57,9 @@
 
                 'vec4 texColor0 = texture(samplerColor, vTexCoord + weight * flow);',
                 'vec4 texColor1 = texture(samplerColor, vTexCoord + fract(weight+0.5) * flow);',
-
-                'float w0 = texture(samplerMask, vTexCoord + weight * flow).x;',
-                'float w1 = texture(samplerMask, vTexCoord + fract(weight+0.5) * flow).x;',
-                'float w = w0 + w1;',
-            
-                'float a = 0.5 * cos(2.0*3.141592*weight) + 0.5;',
-                'outColor = (texColor0 * w0 * (1.0-a) +  texColor1 * w1 * a) / (w0 * (1.0-a) + w1 * a);',
-                'if(w < 0.0001) outColor = texture(samplerColor, vTexCoord);',
+                'outColor = mix(texColor0 * w0, texColor1 * w1, 0.5 * cos(2.0*3.141592*weight) + 0.5) / w;',
             '}'
         ].join('\n');
-//                'outColor = mix(texColor0 * w0, texColor1 * w1, 0.5 * cos(2.0*3.141592*weight) + 0.5) / w;',
 
         var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
         gl.shaderSource(fragmentShader, fsSource);
