@@ -63,11 +63,11 @@
                 'float w = w0 + w1;',
             
                 'float a = 0.5 * cos(2.0*3.141592*weight) + 0.5;',
-                'outColor = (texColor0 * w0 * (1-a) +  texColor1 * w1 * a) / (w0 * (1-a) + w1 * a);',
-//                'outColor = mix(texColor0 * w0, texColor1 * w1, 0.5 * cos(2.0*3.141592*weight) + 0.5) / w;',
+                'outColor = (texColor0 * w0 * (1.0-a) +  texColor1 * w1 * a) / (w0 * (1.0-a) + w1 * a);',
                 'if(w < 0.0001) outColor = texture(samplerColor, vTexCoord);',
             '}'
         ].join('\n');
+//                'outColor = mix(texColor0 * w0, texColor1 * w1, 0.5 * cos(2.0*3.141592*weight) + 0.5) / w;',
 
         var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
         gl.shaderSource(fragmentShader, fsSource);
