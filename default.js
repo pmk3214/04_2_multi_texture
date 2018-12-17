@@ -182,14 +182,6 @@
             window.requestAnimationFrame(update);
         }
         
-        function load_resources(sources, texture){
-            var img = new Image();// 画像オブジェクトの生成
-
-            img.onload = function(texture){// 画像が読み込まれた際の処理
-            };
-            img.src = source;// 画像ファイルを指定して読み込む
-        }
-        
         function load_resources(urls, callback) {
           var resources = {};
           var resource_count = urls.length;
