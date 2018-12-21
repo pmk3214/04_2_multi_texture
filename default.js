@@ -30,7 +30,7 @@
                 'gl_Position = vec4(position, 0.0, 1.0);',
                 'vTexCoord = texture_coord;',
                 'vTexCoord.x = 0.2+0.8*texture_coord.x;',
-                'vTexCoord.y = 0.4*texture_coord.y;',
+                'vTexCoord.y = 0.8*texture_coord.y;',
             '}'
         ].join('\n');
 
