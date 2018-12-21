@@ -53,7 +53,7 @@
 
             'void main(void) {',
                 'float mask = texture(samplerMask, vTexCoord).x;',
-                'vec2 flow = mask * vec2(-0.10, 0.20);',
+                'vec2 flow = mask * vec2(-0.10, 0.05);',
 
                 'vec4 texColor0 = texture(samplerColor, vTexCoord + weight * flow);',
                 'vec4 texColor1 = texture(samplerColor, vTexCoord + fract(weight+0.5) * flow);',
@@ -124,8 +124,8 @@
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, resources['texture.png']);// テクスチャへ画像を写す
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, CLAMP_TO_EDGE);
             texture_color = tex_color; // 生成したテクスチャをグローバル変数に代入
             
             var tex_mask = gl.createTexture();// テクスチャオブジェクトの生成
