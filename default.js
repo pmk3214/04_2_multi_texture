@@ -29,6 +29,8 @@
             'void main(void) {',
                 'gl_Position = vec4(position, 0.0, 1.0);',
                 'vTexCoord = texture_coord;',
+                'vTexCoord.x = 0.2+0.8*texture_coord.x;',
+                'vTexCoord.y = 0.8*texture_coord.y;',
             '}'
         ].join('\n');
 
@@ -124,8 +126,8 @@
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, resources['texture.png']);// テクスチャへ画像を写す
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
             texture_color = tex_color; // 生成したテクスチャをグローバル変数に代入
             
             var tex_mask = gl.createTexture();// テクスチャオブジェクトの生成
